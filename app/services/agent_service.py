@@ -52,7 +52,7 @@ class AgentService:
     async def process_query(self, user_messages: str, thread_id: uuid.UUID):
         """LangChain Messages 형식의 쿼리를 처리하고 AIMessage 형식으로 반환합니다."""
         try:
-            await self._init_checkpointer()
+            # await self._init_checkpointer()
             # 에이전트 초기화 (한 번만)
             self._create_agent(thread_id=thread_id)
 

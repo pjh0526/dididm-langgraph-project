@@ -33,7 +33,7 @@ _SIDO_CODE: dict[str, str] = {
   "강원": "420000", "강원도": "420000", "강원특별자치도": "420000",
   "충북": "430000", "충청북도": "430000",
   "충남": "440000", "충청남도": "440000",
-  "전복": "450000", "전라북도": "450000", "전라특별자치도": "450000",
+  "전북": "450000", "전라북도": "450000", "전라특별자치도": "450000",
   "전남": "460000", "전라남도": "460000",
   "경북": "470000", "경상북도": "470000",
   "경남": "480000", "경상남도": "480000",
@@ -48,7 +48,7 @@ _DEPT_CODE: dict[str, str] = {
   "성형외과": "08",
   "마취통증의학과": "09", "마취과": "09",
   "산부인과": "10", "산부과": "10",
-  "소아형소년과": "11", "소아과": "11",
+  "소아청소년과": "11", "소아과": "11",
   "안과": "12",
   "이비인후과": "13",
   "피부과": "14",
@@ -90,7 +90,7 @@ def _bm25_query(search_query:str) -> dict[str, Any]:
 def _build_retriever() -> ElasticsearchRetriever:
   es_client = Elasticsearch(
     _ES_URL,
-    basic_auth(_ES_USER, _ES_PASSWORD),
+    basic_auth=(_ES_USER, _ES_PASSWORD),
     verify_certs=False,
   )
   return ElasticsearchRetriever(
@@ -153,11 +153,12 @@ def get_medication_info(medication_name: str) -> str:
   except Exception as e:
     return f"약물 정보 조회 중 오류 발생: {e}"
 
-  items: list[Any] = {
+  items: list[Any] = (
     data.get("body", {}).get("items", [])
     or data.get("response", {}).get("body", {}).get("items", [])
     or []
-  }
+  )
+  
   if isinstance(items, dict):
     items = [items]
 
@@ -172,7 +173,7 @@ def get_medication_info(medication_name: str) -> str:
 
     field_map = {
       "efcyQesitm": "효능",
-      "useMethodQestm": "사용법",
+      "useMethodQesitm": "사용법",
       "atpnWarnQesitm": "주의사항(경고)",
       "atpnQesitm": "주의사항",
       "intrcQesitm": "상호작용",
@@ -187,8 +188,8 @@ def get_medication_info(medication_name: str) -> str:
 
   return "\n".join(lines).strip()
 
-  @tool
-  def find_nearby_hospitals(location: str, specialty: str = "일반") -> str:
+@tool
+def find_nearby_hospitals(location: str, specialty: str = "일반") -> str:
     """
     지역명과 병원 종별(speciality)을 기반으로 건강보험심사위원가원 병원정보서비스에서 병워 목록을 조회합니다.
     location: 시도명 (예: '서울', '부산', '경기') 또는 병원명 일부
@@ -209,7 +210,7 @@ def get_medication_info(medication_name: str) -> str:
     dept_cd = _DEPT_CODE.get(specialty)
 
     params: dict[str, Any] = {
-      "serviceKey": _NOSP_API_KEY,
+      "serviceKey": _HOSP_API_KEY,
       "pageNo": "1",
       "numOfRows": "5",
     }

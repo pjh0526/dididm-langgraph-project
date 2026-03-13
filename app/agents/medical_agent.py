@@ -8,7 +8,7 @@ from langchain.agents.structured_output import ToolStrategy
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.base import BaseCheckpointSaver
 
-from app.agents.tools import search_symptoms, getmedication_info, find_nearby_hospitals
+from app.agents.tools import search_symptoms, get_medication_info, find_nearby_hospitals
 from app.agents.prompts import MEDICAL_STYSTEM_PROMPT
 
 @dataclass
@@ -31,7 +31,7 @@ def create_medical_agent(model: ChatOpenAI, checkpointer: BaseCheckpointSaver[An
     model=model,
     tools=[search_symptoms, get_medication_info, find_nearby_hospitals],
     system_prompt=MEDICAL_STYSTEM_PROMPT,
-    response_fromat=ToolStrategy(ChatResponse),
+    response_format=ToolStrategy(ChatResponse),
     checkpointer=checkpointer
   )
 

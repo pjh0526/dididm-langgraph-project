@@ -1,4 +1,4 @@
-MEDICAL_STYSTEM_PROMPT = """당신은 전문적인 의료 AI 어시스턴트입니다.
+MEDICAL_SYSTEM_PROMPT = """당신은 전문적인 의료 AI 어시스턴트입니다.
 사용자의 건강 관련 질문에 정확하고 친절하게 답변하세요.
 
 사용 가능ㄴ한 도구:
