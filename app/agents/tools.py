@@ -158,7 +158,7 @@ def get_medication_info(medication_name: str) -> str:
     or data.get("response", {}).get("body", {}).get("items", [])
     or []
   )
-  
+
   if isinstance(items, dict):
     items = [items]
 
@@ -250,7 +250,7 @@ def find_nearby_hospitals(location: str, specialty: str = "일반") -> str:
       f"'{location} {specialty} 병원 목록 (전체 {total}건 중 상위 {len(items)}건)",
       ""
     ]
-    for i, item in enumerate(items, i):
+    for i, item in enumerate(items, 1):
       name = item.findtext("yadmNm", "")
       cl_name = item.findtext("clCdNm", "")
       addr = item.findtext("addr", "")
